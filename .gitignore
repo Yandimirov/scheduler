@@ -1,0 +1,7 @@
+.idea/
+target/
+build/
+*.iml
+/node_modules/*
+src/main/webapp/node_modules/
+scheduler.iml
