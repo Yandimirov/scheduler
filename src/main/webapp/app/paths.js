@@ -1,0 +1,12 @@
+export const SERVER_HOST = "https://" + require("os").hostname() + ":8443";
+export const PATH_AUTH = SERVER_HOST + "/auth";
+export const PATH_LOGOUT = SERVER_HOST + "/signout";
+export const PATH_API_USER = SERVER_HOST + "/api/user/";
+export const PATH_API_USERS = SERVER_HOST + "/api/users";
+export const PATH_API_EVENT = SERVER_HOST + "/api/event";
+export const PATH_API_BIRTHDAY = SERVER_HOST + "/api/birthday";
+export const PATH_REGISTRATION = SERVER_HOST + "/registration";
+export const IMAGE_PATH = SERVER_HOST + "/images/";
+export const PATH_API_CHAT = SERVER_HOST + "/api/chat";
+export const PATH_API_MESSAGE = SERVER_HOST + "/api/message";
+export const PATH_API_EVENT_BY_TYPE = SERVER_HOST + "/api/eventByType";
