@@ -6,3 +6,4 @@ build/
 src/main/webapp/node_modules/
 scheduler.iml
 src/main/webapp/public/js/bundle.js
+src/main/webapp/public/js/bundle.map
