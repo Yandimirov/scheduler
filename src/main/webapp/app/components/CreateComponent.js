@@ -2,21 +2,17 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
-import FontIcon from 'material-ui/FontIcon';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import swal from 'sweetalert';
 import jQuery from 'jquery';
 import TimePicker from 'material-ui/TimePicker';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete, {geocodeByAddress} from 'react-places-autocomplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { geocodeByAddress} from 'react-places-autocomplete';
 import {PATH_API_EVENT} from '../paths';
 import {getConfig} from '../utils.js';
 import axios from 'axios';
-import ReactDOM from 'react-dom';
 
 const styles = {
     radioButton: {

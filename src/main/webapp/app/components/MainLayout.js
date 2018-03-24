@@ -1,25 +1,18 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import Paper from 'material-ui/Paper';
-
-import LoginForm from './LoginForm';
 import Logo from './Logo';
-import UserPersonalInfo from './UserPersonalInfo.js';
 import UserInfo from './UserInfo';
-
-
-import {cyan500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import FontIcon from 'material-ui/FontIcon';
-const GroupIcon = <FontIcon className="material-icons">group</FontIcon>;
-const EmailIcon = <FontIcon className="material-icons">email</FontIcon>;
-import {browserHistory} from 'react-router';
 import {PATH_API_USER} from '../paths.js';
 import axios from 'axios';
-import {getImagePath} from '../utils.js'
+
+const GroupIcon = <FontIcon className="material-icons">group</FontIcon>;
+const EmailIcon = <FontIcon className="material-icons">email</FontIcon>;
 
 
 const muiTheme = getMuiTheme({});
@@ -119,11 +112,6 @@ const MainLayout = React.createClass({
                                     <BottomNavigationItem
                                         label="Пользователи"
                                         icon={GroupIcon}/>
-                                </Link>
-                                <Link to="/chats">
-                                    <BottomNavigationItem
-                                        label="Сообщения"
-                                        icon={EmailIcon}/>
                                 </Link>
                             </BottomNavigation>
                         </div>

@@ -1,17 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router';
 import Scheduler from './Scheduler.js';
 import MapContainer from './MapContainer.js';
-
-import FontIcon from 'material-ui/FontIcon';
-
-import axios from 'axios';
-import UserLink from './UserLink.js';
-import {SERVER_HOST} from '../paths.js';
-import {PATH_API_EVENT} from '../paths';
-import {getConfig} from '../utils.js';
-import {mapEvents} from '../utils.js';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import {Tab, Tabs} from 'material-ui/Tabs';
 
 const styles = {
     headline: {

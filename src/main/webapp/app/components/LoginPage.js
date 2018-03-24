@@ -1,14 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Logo from './Logo';
-import LoginForm from './LoginForm';
 import LoginInfo from './LoginInfo';
-
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
 const muiTheme = getMuiTheme({});

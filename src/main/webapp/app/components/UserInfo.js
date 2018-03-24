@@ -6,10 +6,7 @@ import UserPersonalInfo from './UserPersonalInfo.js';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import {getImagePath} from '../utils.js';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import FontIcon from 'material-ui/FontIcon';
-import CreateComponent from './CreateComponent.js';
 
 
 const UserInfo = React.createClass({

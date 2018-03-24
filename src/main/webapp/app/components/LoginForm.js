@@ -1,11 +1,9 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import {Link} from 'react-router';
-import axios from 'axios';
 import {browserHistory} from 'react-router';
+import axios from 'axios';
 import {PATH_AUTH} from '../paths.js';
 
 const LoginForm = React.createClass({

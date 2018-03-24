@@ -36,13 +36,6 @@ export default (
             <Route path="event">
                 <Route path=":eventId" component={EventComponent}/>
             </Route>
-
-            <Route path="chats">
-                <Route component={SearchLayout}>
-                    <IndexRoute component={ChatList}/>
-                </Route>
-                <Route path=":chatId" component={ChatMessages}/>
-            </Route>
         </Route>
 
         <Route component={LoginPage}>

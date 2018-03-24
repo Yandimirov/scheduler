@@ -4,17 +4,13 @@ import React from 'react';
 import jQuery from 'jquery';
 import swal from 'sweetalert';
 import 'swal-forms';
-import {UserProfileMessage} from './UserProfileMessage.js';
-import {PATH_API_EVENT, PATH_API_BIRTHDAY} from '../paths';
-import {getConfig} from '../utils.js';
-import {mapEvents} from '../utils.js';
+import {PATH_API_BIRTHDAY, PATH_API_EVENT} from '../paths';
+import {getConfig, getEventByType, getPathApiUserEvents, getPathApiUserRole, mapEvents} from '../utils.js';
 import axios from 'axios';
 import CreateComponent from './CreateComponent.js';
-import {getPathApiUserRole, getPathApiUserEvents, getEventByType} from '../utils.js';
 import {browserHistory} from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import styles from 'fullcalendar';
 
 
 class Scheduler extends React.Component {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import {ExtendedGoogleMap} from './ExtendedGoogleMap';
 import {getConfig, getPathApiEvent, getPathApiUserEvents} from '../utils.js';
 import {PATH_API_EVENT} from '../paths.js';
