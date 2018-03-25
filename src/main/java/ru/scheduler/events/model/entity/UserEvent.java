@@ -1,14 +1,20 @@
 package ru.scheduler.events.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.scheduler.users.model.entity.User;
 import ru.scheduler.config.View;
-
-import javax.persistence.*;
-import java.util.List;
+import ru.scheduler.users.model.entity.User;
 
 @Data
 @Entity(name="USER_EVENTS")
@@ -21,8 +27,11 @@ public class UserEvent {
     @JsonView(View.EVENT.class)
     private long id;
 
-    @JoinColumn(name="EVENT_ID")
     @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "EVENT_ID", referencedColumnName = "EVENT_ID"),
+            @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")
+    })
     @JsonView(View.EVENT.class)
     private Event event;
 

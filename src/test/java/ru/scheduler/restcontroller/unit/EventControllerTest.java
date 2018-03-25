@@ -1,5 +1,10 @@
 package ru.scheduler.restcontroller.unit;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,18 +18,13 @@ import org.springframework.util.MultiValueMap;
 import ru.scheduler.events.model.dto.EventDTO;
 import ru.scheduler.events.model.dto.EventNotificationDTO;
 import ru.scheduler.events.model.entity.Event;
-import ru.scheduler.users.model.entity.User;
+import ru.scheduler.events.model.entity.Event.EventId;
 import ru.scheduler.events.model.entity.UserEvent;
-import ru.scheduler.users.model.entity.UserRole;
 import ru.scheduler.events.restcontroller.EventController;
 import ru.scheduler.events.service.EventService;
+import ru.scheduler.users.model.entity.User;
+import ru.scheduler.users.model.entity.UserRole;
 import ru.scheduler.users.service.JwtService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by Mikhail Yandimirov on 13.05.2017.
@@ -58,7 +58,7 @@ public class EventControllerTest {
         user.setId(1L);
         ReflectionTestUtils.setField(eventController, "TOKEN_HEADER", TOKEN_HEADER);
         event = new Event();
-        event.setId(1L);
+        event.setCompositeId(new EventId(1L));
         List<String> tokens = new ArrayList<>();
         tokens.add(token);
         headers.put(TOKEN_HEADER, tokens);
@@ -86,9 +86,8 @@ public class EventControllerTest {
 
     @Test
     public void updateEvent() throws Exception {
-        RequestEntity<Event> request = new RequestEntity<>(event, null, null);
         when(eventService.updateEvent(event)).thenReturn(event);
-        eventController.updateEvent(request);
+        eventController.updateEvent(event);
         verify(eventService).updateEvent(event);
     }
 
@@ -127,19 +126,18 @@ public class EventControllerTest {
 
     @Test
     public void addEvent() throws Exception {
-        RequestEntity<EventDTO> request = new RequestEntity<EventDTO>(eventDTO, headers, null, null);
         when(jwtService.getUser(token)).thenReturn(user);
         when(eventService.addEvents(eventDTO)).thenReturn(new ArrayList<Event>());
-        eventController.addEvent(request);
+        eventController.addEvent(eventDTO);
         verify(jwtService).getUser(token);
         verify(eventService).addEvents(eventDTO);
     }
 
     @Test
     public void getEvent() throws Exception {
-        when(eventService.getEvent(event.getId())).thenReturn(event);
-        eventController.getEvent(event.getId());
-        verify(eventService).getEvent(event.getId());
+        when(eventService.getEvent(event.getId(), null)).thenReturn(event);
+        eventController.getEvent(event.getId(), null);
+        verify(eventService).getEvent(event.getId(), null);
     }
 
     @Test
@@ -157,7 +155,7 @@ public class EventControllerTest {
         RequestEntity<EventNotificationDTO> request = new RequestEntity<>(eventNotificationDTO, headers, null, null);
         when(jwtService.getUser(token)).thenReturn(user);
         when(eventService.subscribeEvent(eventNotificationDTO, user)).thenReturn(new UserEvent());
-        eventController.subscribeEvent(request, event.getId());
+        eventController.subscribeEvent(eventNotificationDTO, event.getId(), "12345");
         verify(jwtService).getUser(token);
         verify(eventService).subscribeEvent(eventNotificationDTO, user);
     }

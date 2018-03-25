@@ -1,5 +1,12 @@
 package ru.scheduler.restcontroller.integration;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,18 +33,10 @@ import ru.scheduler.events.model.entity.UserEvent;
 import ru.scheduler.events.repository.EventInfoRepository;
 import ru.scheduler.events.repository.EventRepository;
 import ru.scheduler.events.repository.PlaceRepository;
-import ru.scheduler.users.repository.UserRepository;
-import ru.scheduler.users.service.JwtService;
 import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.model.entity.UserRole;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import ru.scheduler.users.repository.UserRepository;
+import ru.scheduler.users.service.JwtService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -111,7 +110,7 @@ public class EventControllerTestIT {
         eventForSubscirbe.setInfo(eventInfo);
         eventForSubscirbe.setStartDate(date1);
         eventForSubscirbe.setEndDate(date2);
-        eventForSubscirbe = eventRepository.save(eventForSubscirbe);
+        eventForSubscirbe = eventRepository.persist(eventForSubscirbe);
     }
 
     @After
