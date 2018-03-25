@@ -3,17 +3,17 @@ package ru.scheduler.users.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.scheduler.users.model.entity.User;
-
-import javax.annotation.PostConstruct;
-import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import ru.scheduler.users.model.entity.UserRole;
 
 @Service
 public class JwtService {
@@ -75,4 +75,12 @@ public class JwtService {
         return getToken(this.encodedSecret, user);
     }
 
+    public static void main(String[] args) {
+        JwtService jwtService = new JwtService();
+        jwtService.plainSecret = "123456";
+        jwtService.expireHours = 500000L;
+        String s = jwtService.generateEncodedSecret("123456");
+
+        System.out.println(jwtService.getToken(s, new User(1L, "Ilnur", "Khafizov", null, "ilnurkhafizoff@yandex.ru", "miya16", "123456", null, null, UserRole.MODERATOR)));
+    }
 }

@@ -1,11 +1,10 @@
 package ru.scheduler.events.model.dto;
 
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.scheduler.events.model.entity.EventType;
-
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +17,5 @@ public class EventDTO {
     private Date startDate;
     private Date endDate;
     private EventType type;
+    private Date createdAt = new Date();
 }
