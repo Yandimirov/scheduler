@@ -74,13 +74,4 @@ public class JwtService {
     public String getToken(User user) {
         return getToken(this.encodedSecret, user);
     }
-
-    public static void main(String[] args) {
-        JwtService jwtService = new JwtService();
-        jwtService.plainSecret = "123456";
-        jwtService.expireHours = 500000L;
-        String s = jwtService.generateEncodedSecret("123456");
-
-        System.out.println(jwtService.getToken(s, new User(1L, "Ilnur", "Khafizov", null, "ilnurkhafizoff@yandex.ru", "miya16", "123456", null, null, UserRole.MODERATOR)));
-    }
 }

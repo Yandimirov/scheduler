@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.scheduler.config.View;
 import ru.scheduler.users.model.dto.AuthDTO;
 import ru.scheduler.users.model.entity.User;
-import ru.scheduler.config.View;
 import ru.scheduler.users.service.AuthService;
 
 import javax.naming.NamingException;

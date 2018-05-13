@@ -1,18 +1,5 @@
 package ru.scheduler.events.service;
 
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Timer;
-import javax.mail.MessagingException;
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +24,20 @@ import ru.scheduler.scheduling.model.entity.MailTimerTask;
 import ru.scheduler.scheduling.service.MailService;
 import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.repository.UserRepository;
+
+import javax.mail.MessagingException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Timer;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.maxBy;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Mikhail Yandimirov on 16.04.2017.
@@ -291,6 +292,7 @@ public class EventService {
     }
 
     public List<Event> addEvents(EventDTO eventDTO) {
+        eventDTO.setType(EventType.APPROVED);
         PlaceDTO placeDTO = eventDTO.getPlace();
         Place place = null;
         if (placeDTO != null) {

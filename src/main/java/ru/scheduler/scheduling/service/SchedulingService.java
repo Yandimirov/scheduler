@@ -4,14 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.scheduler.scheduling.model.dto.Mail;
 import ru.scheduler.events.model.entity.EventNotification;
-import ru.scheduler.users.model.entity.User;
-import ru.scheduler.scheduling.model.entity.MailTimerTask;
 import ru.scheduler.events.repository.EventNotificationRepository;
+import ru.scheduler.scheduling.model.dto.Mail;
+import ru.scheduler.scheduling.model.entity.MailTimerTask;
+import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.repository.UserRepository;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Timer;
 
 /**
  * Created by Mikhail Yandimirov on 22.04.2017.

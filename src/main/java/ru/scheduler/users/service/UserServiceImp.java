@@ -10,7 +10,8 @@ import ru.scheduler.users.repository.UserRepository;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService {

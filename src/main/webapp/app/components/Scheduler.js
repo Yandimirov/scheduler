@@ -37,15 +37,9 @@ class Scheduler extends React.Component {
 
     render() {
         let styles = {display: 'block', marginLeft: 170};
-        let label = "";
+        let label = "Создать событие";
         let waitedStyle = null;
-        if(!this.state.hideCreate){
-            label = "Создать событие";
-            waitedStyle = {display: "block"};
-        } else {
-            label = "Предложить событие";
-            waitedStyle = {display: "none"};
-        }
+        waitedStyle = {display: "block"};
 
         let myPage = '';
         if(typeof(this.props.user) === 'undefined'){
@@ -55,7 +49,7 @@ class Scheduler extends React.Component {
                     <MenuItem value={1} label="Подтвержденные" primaryText="Подтвержденные" />
                     <MenuItem value={2} label="Участник" primaryText="Участник" />
                     <MenuItem value={3} label="Дни рождения" primaryText="Дни рождения" />
-                    <MenuItem value={4} label="Непроверенные" primaryText="Непроверенные" style={waitedStyle}/>
+                    {/*<MenuItem value={4} label="Непроверенные" primaryText="Непроверенные" style={waitedStyle}/>*/}
                 </SelectField>
             </div>;
         }

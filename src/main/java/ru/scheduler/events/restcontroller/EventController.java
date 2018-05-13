@@ -1,8 +1,6 @@
 package ru.scheduler.events.restcontroller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import java.util.List;
-import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +21,9 @@ import ru.scheduler.events.service.EventService;
 import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.model.entity.UserRole;
 import ru.scheduler.users.service.JwtService;
+
+import javax.mail.MessagingException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")

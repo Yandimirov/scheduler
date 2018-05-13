@@ -1,7 +1,5 @@
 package ru.scheduler.events.hibernate;
 
-import java.io.Serializable;
-import java.util.Properties;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.dialect.Dialect;
@@ -15,6 +13,9 @@ import org.hibernate.type.Type;
 import ru.scheduler.events.model.CompositeId;
 import ru.scheduler.events.model.CompositeIdentifiable;
 import ru.scheduler.events.model.entity.Event.EventId;
+
+import java.io.Serializable;
+import java.util.Properties;
 
 public class EventIdSequenceIdentifier extends SequenceStyleGenerator {
 

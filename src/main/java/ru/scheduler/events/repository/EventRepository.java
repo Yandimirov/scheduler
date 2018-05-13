@@ -1,15 +1,16 @@
 package ru.scheduler.events.repository;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.Event.EventId;
 import ru.scheduler.events.model.entity.EventType;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Mikhail Yandimirov on 09.04.2017.

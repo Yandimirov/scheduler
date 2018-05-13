@@ -1,11 +1,13 @@
 package ru.scheduler.users.service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import ru.scheduler.users.model.dto.AuthDTO;
+import ru.scheduler.users.model.entity.User;
+
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -14,12 +16,12 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Service;
-import ru.scheduler.users.model.dto.AuthDTO;
-import ru.scheduler.users.model.entity.User;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -181,9 +183,11 @@ public class AuthService {
                     e.printStackTrace();
                 }
             }
-            String token = jwtService.getToken(user);
-            user.setToken(token);
-            user = userService.save(user);
+            if (StringUtils.isEmpty(user.getToken())) {
+                String token = jwtService.getToken(user);
+                user.setToken(token);
+                user = userService.save(user);
+            }
             return user;
         }
         return null;

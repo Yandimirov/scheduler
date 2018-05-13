@@ -3,8 +3,8 @@ package ru.scheduler.events.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.scheduler.events.model.entity.Event;
-import ru.scheduler.users.model.entity.User;
 import ru.scheduler.events.model.entity.UserEvent;
+import ru.scheduler.users.model.entity.User;
 
 import java.util.List;
 

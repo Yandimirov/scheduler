@@ -39243,7 +39243,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var SERVER_HOST = exports.SERVER_HOST = "http://" + __webpack_require__(688).hostname() + ":8081";
+	var SERVER_HOST = exports.SERVER_HOST = "http://" + __webpack_require__(688).hostname() + ":8080";
 	var PATH_AUTH = exports.PATH_AUTH = SERVER_HOST + "/auth";
 	var PATH_LOGOUT = exports.PATH_LOGOUT = SERVER_HOST + "/signout";
 	var PATH_API_USER = exports.PATH_API_USER = SERVER_HOST + "/api/user/";
@@ -73076,15 +73076,9 @@
 	        key: 'render',
 	        value: function render() {
 	            var styles = { display: 'block', marginLeft: 170 };
-	            var label = "";
+	            var label = "Создать событие";
 	            var waitedStyle = null;
-	            if (!this.state.hideCreate) {
-	                label = "Создать событие";
-	                waitedStyle = { display: "block" };
-	            } else {
-	                label = "Предложить событие";
-	                waitedStyle = { display: "none" };
-	            }
+	            waitedStyle = { display: "block" };
 	
 	            var myPage = '';
 	            if (typeof this.props.user === 'undefined') {
@@ -73097,8 +73091,7 @@
 	                        { value: this.state.value, onChange: this.handleSelect },
 	                        _react2.default.createElement(_MenuItem2.default, { value: 1, label: '\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u043D\u044B\u0435', primaryText: '\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043D\u043D\u044B\u0435' }),
 	                        _react2.default.createElement(_MenuItem2.default, { value: 2, label: '\u0423\u0447\u0430\u0441\u0442\u043D\u0438\u043A', primaryText: '\u0423\u0447\u0430\u0441\u0442\u043D\u0438\u043A' }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: 3, label: '\u0414\u043D\u0438 \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F', primaryText: '\u0414\u043D\u0438 \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F' }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: 4, label: '\u041D\u0435\u043F\u0440\u043E\u0432\u0435\u0440\u0435\u043D\u043D\u044B\u0435', primaryText: '\u041D\u0435\u043F\u0440\u043E\u0432\u0435\u0440\u0435\u043D\u043D\u044B\u0435', style: waitedStyle })
+	                        _react2.default.createElement(_MenuItem2.default, { value: 3, label: '\u0414\u043D\u0438 \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F', primaryText: '\u0414\u043D\u0438 \u0440\u043E\u0436\u0434\u0435\u043D\u0438\u044F' })
 	                    )
 	                );
 	            }

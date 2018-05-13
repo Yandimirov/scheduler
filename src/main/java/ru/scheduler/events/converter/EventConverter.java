@@ -1,9 +1,5 @@
 package ru.scheduler.events.converter;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.scheduler.events.model.dto.EventDTO;
@@ -13,6 +9,11 @@ import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.EventInfo;
 import ru.scheduler.events.service.EventInfoService;
 import ru.scheduler.events.service.PlaceService;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Component
 public class EventConverter {
