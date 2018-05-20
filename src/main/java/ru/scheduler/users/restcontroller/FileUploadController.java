@@ -1,5 +1,6 @@
 package ru.scheduler.users.restcontroller;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import ru.scheduler.users.service.UserService;
 import java.io.IOException;
 import java.util.Calendar;
 
+@Log
 @RestController
 @RequestMapping(value = "/images")
 public class FileUploadController {
@@ -45,30 +47,36 @@ public class FileUploadController {
         Resource file = storageService.loadAsResource(IMAGE_PATH);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
     @GetMapping("/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        Resource file = storageService.loadAsResource(filename);
+        Resource file;
+        try {
+            file = storageService.loadAsResource(filename);
+        } catch (Exception e) {
+            log.warning("serveFile; Can't find image with filename " + filename);
+            return serveStdFile();
+        }
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
 
-    @RequestMapping(value = "/",method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("token") String token) throws IOException {
         Long time = Calendar.getInstance().getTimeInMillis();
         User user = jwtService.getUser(token);
-        if(user == null){
+        if (user == null) {
             return IMAGE_PATH;
         }
         String extension = file.getOriginalFilename().split("\\.")[1];
         String fileName = time.toString() + "." + extension;
-        if(!user.getImagePath().equals(IMAGE_PATH)){
+        if (!user.getImagePath().equals(IMAGE_PATH)) {
             storageService.delete(user.getImagePath());
         }
         user.setImagePath(fileName);
