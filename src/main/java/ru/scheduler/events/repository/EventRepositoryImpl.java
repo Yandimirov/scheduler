@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.UserEvent;
 
-
 public class EventRepositoryImpl implements CustomEventRepository {
 
     @Autowired
@@ -38,7 +37,7 @@ public class EventRepositoryImpl implements CustomEventRepository {
                     event.getCompositeId().setVersion(foundLastVersion.get().getVersion() + 1);
                     entityManager.persist(event);
                     userEventRepository.findByEvent(foundLastVersion.get()).stream()
-                            .map(userEvent -> new UserEvent(userEvent.getId(), event, userEvent.getUser(), userEvent.getNotifications()))
+                            .map(userEvent -> new UserEvent(userEvent.getId(), event, userEvent.getUser(), userEvent.getNotifications(), userEvent.getStatus()))
                             .forEach(userEventRepository::save);
                     return event;
                 }

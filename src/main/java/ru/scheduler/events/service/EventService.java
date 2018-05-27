@@ -2,6 +2,7 @@ package ru.scheduler.events.service;
 
 import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.scheduler.events.converter.EventConverter;
 import ru.scheduler.events.converter.EventNotificationConverter;
@@ -16,6 +17,7 @@ import ru.scheduler.events.model.entity.EventNotification;
 import ru.scheduler.events.model.entity.EventType;
 import ru.scheduler.events.model.entity.Place;
 import ru.scheduler.events.model.entity.UserEvent;
+import ru.scheduler.events.model.entity.UserEventStatus;
 import ru.scheduler.events.repository.EventNotificationRepository;
 import ru.scheduler.events.repository.EventRepository;
 import ru.scheduler.events.repository.UserEventRepository;
@@ -73,6 +75,9 @@ public class EventService {
     @Autowired
     EventNotificationConverter eventNotificationConverter;
 
+    @Value("${client.host.address}")
+    String clientAddress;
+
     @Synchronized
     public Event updateEvent(Event event) {
         EventInfo eventInfo = event.getInfo();
@@ -99,13 +104,24 @@ public class EventService {
     public List<User> getUsers(long id) {
         Event event = eventRepository.findLatestVersionById(id).orElseThrow(() -> new EventNotFoundException("Event with id '%s' not found", id));
         List<UserEvent> userEvents = userEventRepository.findByEvent(event);
-        List<User> users = userEvents.stream().map(UserEvent::getUser).collect(toList());
+        List<User> users = userEvents.stream()
+                .filter(userEvent -> userEvent.getStatus() == UserEventStatus.ACCEPTED)
+                .map(UserEvent::getUser)
+                .collect(toList());
         return users;
     }
 
     public List<Event> getUserEvents(long id) {
         User user = userRepository.findOne(id);
         List<UserEvent> userEvents = userEventRepository.findByUser(user);
+        return userEvents.stream()
+                .map(UserEvent::getEvent)
+                .collect(toList());
+    }
+
+    public List<Event> getUserEventsByStatus(long id, String status) {
+        User user = userRepository.findOne(id);
+        List<UserEvent> userEvents = userEventRepository.findByUserAndStatus(user, UserEventStatus.valueOf(status));
         return userEvents.stream()
                 .map(UserEvent::getEvent)
                 .collect(toList());
@@ -206,12 +222,21 @@ public class EventService {
         return !eventRepository.findLatestVersionById(id).isPresent();
     }
 
+    public void rejectEvent(long id, User user) {
+        Event event = eventRepository.findLatestVersionById(id)
+                .orElseThrow(() -> new EventNotFoundException("Event with id '%s' not found", id));
+        UserEvent userEvent = userEventRepository.findByEventAndUser(event, user);
+        userEvent.setStatus(UserEventStatus.REJECTED);
+        userEventRepository.save(userEvent);
+    }
+
     public UserEvent subscribeEvent(EventNotificationDTO eventNotificationDTO, User user) {
         Event event = eventRepository.findLatestVersionById(eventNotificationDTO.getId())
                 .orElseThrow(() -> new EventNotFoundException("Event with id '%s' not found", eventNotificationDTO.getId()));
         UserEvent userEvent = new UserEvent();
         userEvent.setEvent(event);
         userEvent.setUser(user);
+        userEvent.setStatus(UserEventStatus.ACCEPTED);
         userEvent.setNotifications(null);
         userEvent = userEventRepository.save(userEvent);
         List<EventNotification> eventNotifications = eventNotificationConverter
@@ -313,6 +338,7 @@ public class EventService {
         EventInfo eventInfo = EventInfo.builder()
                 .name(eventDTO.getName())
                 .description(eventDTO.getDescription())
+                .createdBy(eventDTO.getCreatedBy())
                 .place(place)
                 .build();
 
@@ -325,5 +351,18 @@ public class EventService {
             savedEvents.add(eventRepository.persist(event));
         }
         return savedEvents;
+    }
+
+    public void sendNewEventsMailToUsers(List<Long> userIds) {
+        userIds.stream()
+                .map(userRepository::findOne)
+                .map(user -> Mail.builder()
+                        .subject("Приглашение на участие в событиях")
+                        .to(user.getEmail())
+                        .text("Привет, " + user.getFirstName() + "!\n" +
+                                "у тебя есть новые приглашеия на участие в собтиях.\n" +
+                                "Переходи по ссылке, чтобы узнать подробнее: <a>" + clientAddress + "</a>")
+                        .build())
+                .forEach(mailService::asyncSend);
     }
 }

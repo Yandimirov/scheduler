@@ -52,7 +52,8 @@ export function getImagePath(imageName) {
 export function getUser(item, index){
     return {
         name: item.firstName + ' ' + item.lastName,
-        id: item.id
+        id: item.id,
+        login: item.username
     }
 }
 

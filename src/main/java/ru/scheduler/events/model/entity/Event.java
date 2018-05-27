@@ -16,6 +16,7 @@ import ru.scheduler.config.View;
 import ru.scheduler.events.model.CompositeId;
 import ru.scheduler.events.model.CompositeIdentifiable;
 import ru.scheduler.events.model.entity.Event.EventId;
+import ru.scheduler.users.model.entity.User;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -27,6 +28,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -74,8 +76,7 @@ public class Event implements CompositeIdentifiable<EventId> {
 
     @ApiModelProperty(readOnly = true)
     @JsonView(View.EVENT.class)
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date createdAt = new Date();
+    private Date createdAt;
 
     public long getId() {
         return compositeId.getId();

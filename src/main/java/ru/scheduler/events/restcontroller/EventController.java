@@ -17,12 +17,16 @@ import ru.scheduler.events.model.dto.EventDTO;
 import ru.scheduler.events.model.dto.EventNotificationDTO;
 import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.UserEvent;
+import ru.scheduler.events.model.entity.UserEventStatus;
+import ru.scheduler.events.repository.UserEventRepository;
 import ru.scheduler.events.service.EventService;
 import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.model.entity.UserRole;
 import ru.scheduler.users.service.JwtService;
+import ru.scheduler.users.service.UserService;
 
 import javax.mail.MessagingException;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -34,6 +38,12 @@ public class EventController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserEventRepository userEventRepository;
 
     @Value("${jwt.auth.header}")
     private String TOKEN_HEADER;
@@ -95,8 +105,34 @@ public class EventController {
 
     @JsonView(View.EVENT.class)
     @RequestMapping(value = "/event", method = RequestMethod.POST)
-    public List<Event> addEvent(@RequestBody EventDTO eventDTO) {
-        return eventService.addEvents(eventDTO);
+    public List<Event> addEvent(@RequestBody EventDTO eventDTO, @RequestHeader("x-auth-token") String token) {
+        User user = jwtService.getUser(token);
+        eventDTO.setCreatedBy(user);
+
+        List<Event> events = eventService.addEvents(eventDTO);
+        events.stream()
+                .map(event -> new EventNotificationDTO(event.getId(), Collections.emptyList()))
+                .forEach(eventNotificationDTO -> eventService.subscribeEvent(eventNotificationDTO, user));
+
+        List<Long> userIds = eventDTO.getUserIds();
+        events.forEach(event -> userIds.forEach(userId -> {
+            User invitedUser = userService.getUserById(userId);
+            UserEvent userEvent = new UserEvent();
+            userEvent.setStatus(UserEventStatus.WAITED);
+            userEvent.setEvent(event);
+            userEvent.setUser(invitedUser);
+            userEventRepository.save(userEvent);
+        }));
+
+        eventService.sendNewEventsMailToUsers(userIds);
+        return events;
+    }
+
+    @JsonView(View.EVENT.class)
+    @RequestMapping(value = "user/event/{id}/decline", method = RequestMethod.POST)
+    public void rejectEvent(@PathVariable long id, @RequestHeader("x-auth-token") String token) {
+        User user = jwtService.getUser(token);
+        eventService.rejectEvent(id, user);
     }
 
     @JsonView(View.EVENT.class)
@@ -136,8 +172,10 @@ public class EventController {
 
     @JsonView(View.EVENT.class)
     @RequestMapping(value = "user/{id}/event", method = RequestMethod.GET)
-    public List<Event> getUserEvents(RequestEntity<?> request, @PathVariable long id) {
-        return eventService.getUserEvents(id);
+    public List<Event> getUserEventsByStatus(RequestEntity<?> request,
+                                             @PathVariable long id,
+                                             @RequestParam(name = "status", required = false, defaultValue = "ACCEPTED") String status) {
+        return eventService.getUserEventsByStatus(id, status);
     }
 
     @JsonView(View.EVENT.class)

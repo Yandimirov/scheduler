@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.scheduler.config.View;
+import ru.scheduler.users.model.entity.User;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,4 +48,9 @@ public class EventInfo {
     @JoinColumn(name="PLACE_ID")
     @JsonView(View.EVENT.class)
     private Place place;
+
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
+    @JsonView(View.EVENT.class)
+    private User createdBy;
 }

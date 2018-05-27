@@ -23,11 +23,11 @@ public class EventConverter {
     @Autowired
     EventInfoService eventInfoService;
 
-    public List<Event> eventDtoToEvents(EventDTO eventDTO, EventInfo eventInfo){
+    public List<Event> eventDtoToEvents(EventDTO eventDTO, EventInfo eventInfo) {
         List<Event> events = new ArrayList<>();
 
         RepeatDTO repeatDTO = eventDTO.getRepeats();
-        if(repeatDTO != null){
+        if (repeatDTO != null) {
             int repeatValue = repeatDTO.getValue();
             RepeatFreq freq = repeatDTO.getFreq();
             long repeatDate = repeatDTO.getUntil().getTime();
@@ -39,14 +39,14 @@ public class EventConverter {
             start.setTime(eventDTO.getStartDate());
             Calendar repeat = Calendar.getInstance();
             repeat.setTime(eventDTO.getStartDate());
-            if(freq == RepeatFreq.DAY){
+            if (freq == RepeatFreq.DAY) {
                 ms = 86400000 * repeatValue;
-            } else if (freq == RepeatFreq.WEEK){
+            } else if (freq == RepeatFreq.WEEK) {
                 ms = 604800000 * repeatValue;
-            } else if (freq == RepeatFreq.MONTH){
+            } else if (freq == RepeatFreq.MONTH) {
                 repeat.add(Calendar.MONTH, repeatValue);
                 ms = repeat.getTimeInMillis() - start.getTimeInMillis();
-            } else if (freq == RepeatFreq.YEAR){
+            } else if (freq == RepeatFreq.YEAR) {
                 repeat.add(Calendar.YEAR, repeatValue);
                 ms = repeat.getTimeInMillis() - start.getTimeInMillis();
             }
@@ -54,13 +54,13 @@ public class EventConverter {
             long tmpStartDate = startDate;
             long tmpEndDate = endDate;
 
-            while(tmpStartDate < repeatDate){
+            while (tmpStartDate < repeatDate) {
                 Event event = new Event();
                 event.setInfo(eventInfo);
                 event.setStartDate(new Date(tmpStartDate));
                 event.setEndDate(new Date(tmpEndDate));
                 event.setType(eventDTO.getType());
-                event.setCreatedAt(eventDTO.getCreatedAt());
+                event.setCreatedAt(new Date());
                 tmpStartDate += ms;
                 tmpEndDate += ms;
                 events.add(event);
@@ -71,7 +71,7 @@ public class EventConverter {
             event.setStartDate(eventDTO.getStartDate());
             event.setEndDate(eventDTO.getEndDate());
             event.setType(eventDTO.getType());
-            event.setCreatedAt(eventDTO.getCreatedAt());
+            event.setCreatedAt(new Date());
             events.add(event);
         }
         return events;

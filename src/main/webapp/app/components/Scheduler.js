@@ -46,9 +46,9 @@ class Scheduler extends React.Component {
             myPage = <div style={{display: 'flex', flexDirection: 'row', marginLeft: 170, marginRight: 50}}>
                 <CreateComponent updateEvents={this.updateEvents} label={label} style={{marginTop: 10}}/>
                 <SelectField value={this.state.value} onChange={this.handleSelect} >
-                    <MenuItem value={1} label="Подтвержденные" primaryText="Подтвержденные" />
+                    <MenuItem value={1} label="Все события" primaryText="Все события" />
                     <MenuItem value={2} label="Участник" primaryText="Участник" />
-                    <MenuItem value={3} label="Дни рождения" primaryText="Дни рождения" />
+                    <MenuItem value={3} label="Приглашения" primaryText="Приглашения" />
                     {/*<MenuItem value={4} label="Непроверенные" primaryText="Непроверенные" style={waitedStyle}/>*/}
                 </SelectField>
             </div>;
@@ -88,13 +88,9 @@ class Scheduler extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         let events = this.state.events;
-        let birthdays = this.state.birthdays;
         jQuery('#calendar').fullCalendar('removeEvents');
         if(this.state.value == 1){
             jQuery('#calendar').fullCalendar('renderEvents', events, true);
-            jQuery('#calendar').fullCalendar('renderEvents', birthdays, true);
-        } else if (this.state.value == 3) {
-            jQuery('#calendar').fullCalendar('renderEvents', birthdays, true);
         } else if (this.state.value == 2){
             axios.get(
                 getPathApiUserEvents(localStorage.getItem('userId')),
@@ -102,9 +98,9 @@ class Scheduler extends React.Component {
             ).then( response => {
                 jQuery('#calendar').fullCalendar('renderEvents', mapEvents(response.data), true);
             });
-        } else if (this.state.value == 4){
+        } else if (this.state.value == 3){
             axios.get(
-                getEventByType("WAITED"),
+                getPathApiUserEvents(localStorage.getItem('userId')) + "?status=WAITED",
                 getConfig()
             ).then( response => {
                 jQuery('#calendar').fullCalendar('renderEvents', mapEvents(response.data), true);
@@ -115,7 +111,7 @@ class Scheduler extends React.Component {
     componentDidMount() {
         if(typeof(this.props.user) === 'undefined'){
             axios.get(
-                PATH_API_EVENT + "/calendar",
+                PATH_API_EVENT,
                 getConfig()
             ).then( response =>{
                 this.setState({

@@ -34,7 +34,6 @@ export default class CreateChat extends React.Component{
         this.handleUserAdd = this.handleUserAdd.bind(this);
         this.indexOfUser = this.indexOfUser.bind(this);
         this.handleCreateChat = this.handleCreateChat.bind(this);
-        //this.handleRequestDelete = this.handleRequestDelete.bind(this);
     }
 
 

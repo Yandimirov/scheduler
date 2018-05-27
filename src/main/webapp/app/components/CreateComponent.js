@@ -10,9 +10,11 @@ import TimePicker from 'material-ui/TimePicker';
 import PlacesAutocomplete, {geocodeByAddress} from 'react-places-autocomplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {PATH_API_EVENT} from '../paths';
-import {getConfig} from '../utils.js';
+import {PATH_API_EVENT, PATH_API_USERS} from '../paths';
+import {getConfig, getUser} from '../utils.js';
 import axios from 'axios';
+import {AutoComplete, Chip, RaisedButton} from "material-ui";
+import moment from "moment";
 
 const styles = {
     radioButton: {
@@ -20,8 +22,10 @@ const styles = {
     },
 };
 
-
-
+const DATA_SOURCE_CONFIG = {
+    text: 'name',
+    value: 'id'
+};
 
 export default class CreateComponent extends React.Component {
     constructor(props) {
@@ -35,6 +39,10 @@ export default class CreateComponent extends React.Component {
                 lat: "",
                 lng: "",
             },
+            chips: [],
+            currentUser: "",
+            selectedUsers: [],
+            users: [],
             startDate: null,
             startTime: null,
             endDate: null,
@@ -59,7 +67,82 @@ export default class CreateComponent extends React.Component {
         this.handleCreate = this.handleCreate.bind(this);
         this.clearState = this.clearState.bind(this);
         this.handleSelectPlace = this.handleSelectPlace.bind(this);
+        this.handleAutoCompleteChange = this.handleAutoCompleteChange.bind(this);
+        this.handleUserAdd = this.handleUserAdd.bind(this);
+        this.indexOfUser = this.indexOfUser.bind(this);
     }
+
+    componentDidMount(){
+        axios.get(PATH_API_USERS, getConfig()).then(response => {
+            let responseUsers = response.data;
+            this.setState({
+                users: responseUsers.map(getUser)
+            });
+        });
+    }
+
+    indexOfUser(userName){
+        const users = this.state.users;
+        for(var i = 0; i < users.length; i++){
+            if(users[i].name === userName){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    handleUserAdd(event) {
+        let userIdx = this.indexOfUser(this.state.currentUser);
+        let selectedUsers = this.state.selectedUsers;
+        let users = this.state.users;
+        if(userIdx != -1){
+            selectedUsers.push(users[userIdx]);
+            users.splice(userIdx, 1);
+            let chips = this.state.chips;
+            chips.push(<Chip
+                onRequestDelete={() => this.handleRequestDelete(selectedUsers[selectedUsers.length - 1].id)}
+                key={selectedUsers[selectedUsers.length - 1].id}
+            >{selectedUsers[selectedUsers.length - 1].name}</Chip>);
+            this.setState({
+                chips: chips,
+                selectedUsers: selectedUsers,
+                users: users,
+                currentUser: ''
+            });
+            this.refs['autoCompleteUserRef'].setState({searchText:''});
+        }
+    }
+
+    handleAutoCompleteChange(value){
+        this.setState({
+            currentUser: value
+        });
+    }
+
+    handleRequestDelete = (key) => {
+        let selectedUsers = this.state.selectedUsers;
+        let users = this.state.users;
+        let chipData = this.state.chips;
+        const chipToDelete = chipData.map((chip) => chip.key).indexOf(key);
+        chipData.splice(chipToDelete, 1);
+
+        let idx = -1;
+        for(let i = 0; i < selectedUsers.length; i++){
+            if(selectedUsers[i].id == key){
+                idx = i;
+            }
+        }
+        if(idx >= 0){
+            users.push(selectedUsers[idx]);
+            selectedUsers.splice(idx, 1);
+        }
+
+        this.setState({
+            selectedUsers: selectedUsers,
+            chips: chipData,
+            users: users
+        });
+    };
 
     clearState(){
         this.setState({
@@ -71,6 +154,10 @@ export default class CreateComponent extends React.Component {
                 lat: "",
                 lng: "",
             },
+            chips: [],
+            selectedUsers: [],
+            currentUser: "",
+            users: [],
             startDate: null,
             startTime: null,
             endDate: null,
@@ -92,9 +179,6 @@ export default class CreateComponent extends React.Component {
     }
 
     handlePlaceChange(event){
-        //console.log(geocodeByAddress(event));
-        //console.log(event.target.value);
-        //console.log(event);
         this.setState({
             place: {
                 name: event,
@@ -129,7 +213,6 @@ export default class CreateComponent extends React.Component {
             }
         });
     }
-
 
     handleNameChange(event) {
         this.setState(
@@ -196,7 +279,6 @@ export default class CreateComponent extends React.Component {
         this.setState({
             freq: value
         });
-        console.log(value);
     };
 
     handleFreqValueChange(event, index, value){
@@ -246,20 +328,21 @@ export default class CreateComponent extends React.Component {
         } else {
             if(start && end){
                 if(flag){
+                    let userIds = this.state.selectedUsers.map(user => user.id);
                     let eventDto = {
                         name: state.name,
                         description: state.description,
                         place: state.place,
                         repeats: repeatsDto,
                         startDate: start,
-                        endDate: end
+                        endDate: end,
+                        userIds: userIds
                     };
                     axios.post(
                         PATH_API_EVENT,
                         eventDto,
                         getConfig()
                     ).then(response => {
-                        console.log(response.data);
                         this.props.updateEvents();
                     });
                     this.clearState();
@@ -285,8 +368,6 @@ export default class CreateComponent extends React.Component {
                 onTouchTap={this.handleCreate}
             />,
         ];
-
-
 
         return (
             <div>
@@ -349,7 +430,7 @@ export default class CreateComponent extends React.Component {
                                    rows = {2}
                                    rowsMax = {5}
                         /><br/>
-                        < DatePicker hintText = "Дата начала"
+                        <DatePicker hintText = "Дата начала"
                                      value = {this.state.startDate}
                                      container = "inline"
                                      style = {{marginLeft: '24px'}}
@@ -383,7 +464,6 @@ export default class CreateComponent extends React.Component {
                                     style = {{marginLeft: '24px'}}
                                     onChange = {this.handleEndTimeChange}
                         />
-
                     </div>
                     <div id="create_form2" className="inline">
                         <div>
@@ -434,8 +514,28 @@ export default class CreateComponent extends React.Component {
                                         name = "entDate"
                                         onChange = {this.handleRepeatEndChange}
                             />
+                            <AutoComplete
+                                dataSource={this.state.users}
+                                name="autoCompleteUser"
+                                floatingLabelText="Введите пользователя"
+                                ref={'autoCompleteUserRef'}
+                                filter={AutoComplete.fuzzyFilter}
+                                dataSourceConfig={DATA_SOURCE_CONFIG}
+                                onUpdateInput={this.handleAutoCompleteChange}
+                                style={{marginLeft: '24px'}}
+                            /><br/>
+                            <RaisedButton
+                                id="user-add"
+                                backgroundColor="000000"
+                                label="Добавить пользователя"
+                                primary={true}
+                                onTouchTap={this.handleUserAdd}
+                                style={{marginLeft: '24px'}}
+                            /><br/>
+                            <div id="selected_users">
+                                {this.state.chips}
+                            </div>
                         </div>
-
                     </div>
                 </Dialog>
             </div>

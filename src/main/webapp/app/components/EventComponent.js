@@ -18,7 +18,7 @@ import moment from 'moment';
 import {ExtendedGoogleMap} from './ExtendedGoogleMap';
 import MapContainer from './MapContainer';
 import swal from 'sweetalert';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import UserLink from './UserLink';
 import {getPathApiEventUsers} from "../utils";
 import FontIcon from 'material-ui/FontIcon';
@@ -32,10 +32,16 @@ export default class EventComponent extends React.Component {
                 id: '',
                 startDate: '',
                 endDate: '',
+                createdAt: '',
                 info: {
                     id: '',
                     name: '',
                     description: '',
+                    createdBy: {
+                        id: '',
+                        firstName: '',
+                        lastName: ''
+                    },
                     place: {
                         id: '',
                         lat: '',
@@ -50,6 +56,7 @@ export default class EventComponent extends React.Component {
             open: false,
             moderFunc: false,
             subscribed: false,
+            waited: false,
             subscribeDisabled: false,
             notification1: {
                 date: null,
@@ -68,6 +75,7 @@ export default class EventComponent extends React.Component {
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.handleSubcribeEvent = this.handleSubcribeEvent.bind(this);
         this.handleDeleteEvent = this.handleDeleteEvent.bind(this);
+        this.handleRejectEvent = this.handleRejectEvent.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
         this.handleTime1Change = this.handleTime1Change.bind(this);
         this.handleTime2Change = this.handleTime2Change.bind(this);
@@ -83,7 +91,7 @@ export default class EventComponent extends React.Component {
 
     handleApproveEvent(event){
         let calendarEvent = this.state.event;
-        calendarEvent.type = "APPROVED";
+        calendarEvent.type = "ACCEPTED";
         axios.put(
             PATH_API_EVENT,
             calendarEvent,
@@ -93,6 +101,15 @@ export default class EventComponent extends React.Component {
                 event: response.data
             })
         });
+    };
+
+    handleRejectEvent(event){
+        let calendarEvent = this.state.event;
+        axios.post(
+            getPathApiUserEvent(calendarEvent.id) + "/decline",
+            null,
+            getConfig()
+        ).then(response => {browserHistory.push('/');});
     };
 
     handleDeleteEvent(event) {
@@ -295,14 +312,22 @@ export default class EventComponent extends React.Component {
             getPathApiUserEvent(this.props.params.eventId),
             getConfig()
         ).then(response => {
-            if(response.data == null){
+            if(response.data === null){
                 this.setState({
                    subscribed: false
                 });
             } else {
-                this.setState({
-                    subscribed: true
-                });
+                let userEvent = response.data;
+                if (userEvent.status === 'WAITED') {
+                    this.setState({
+                        subscribed: false,
+                        waited: true
+                    });
+                } else {
+                    this.setState({
+                        subscribed: false
+                    });
+                }
             }
         });
 
@@ -327,8 +352,8 @@ export default class EventComponent extends React.Component {
 
     render() {
         let moderStyles = null;
-
-        if (this.state.moderFunc) {
+        let userId = localStorage.getItem('userId');
+        if (this.state.event.info.createdBy.id === userId) {
             moderStyles = {
                 display: 'inline'
             };
@@ -342,14 +367,11 @@ export default class EventComponent extends React.Component {
 
         let label = '';
 
-        if(this.state.subscribed){
+        if(this.state.subscribed) {
             label = 'Отписаться';
         } else {
             label = 'Подписаться';
         }
-
-
-
 
         let actions = [
 
@@ -372,16 +394,13 @@ export default class EventComponent extends React.Component {
             />,
         ];
 
-        if(this.state.event.type == "WAITED"){
+        if(this.state.waited){
             actions.push(<FlatButton
-                label="Подтвердить"
+                label="Отклонить"
                 primary={true}
-                onTouchTap={this.handleApproveEvent}
-                style={moderStyles}
+                onTouchTap={this.handleRejectEvent}
             />);
         }
-
-
 
         let notifActions = [
             <FlatButton
@@ -480,8 +499,10 @@ export default class EventComponent extends React.Component {
                     <div className="event-info-title">
                         <h2>{event.info.name}</h2>
                     </div>
+                        <p><b>Дата создания</b>: {moment(event.createdAt).format('LLL')}</p>
                         <p><b>Начало события</b>: {moment(event.startDate).format('LLL')}</p>
                         <p><b>Конец события</b>: {moment(event.endDate).format('LLL')}</p>
+                        <p><b>Создатель события</b>: <Link to={"/users/" + event.info.createdBy.id}> {event.info.createdBy.firstName} {event.info.createdBy.lastName}</Link></p>
                         <p><b>Описание</b>: {event.info.description}</p>
                         <p><b>Местоположение:</b> {event.info.place.name}</p>
                     <div>
