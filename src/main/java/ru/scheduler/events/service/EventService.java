@@ -94,8 +94,11 @@ public class EventService {
         EventInfo foundEventInfo = eventInfoService.getEventInfo(eventInfo.getId());
         if (!Objects.equals(eventInfo, foundEventInfo)) {
             eventInfo.setId(0);
+            eventInfo.setCreatedBy(foundEventInfo.getCreatedBy());
             eventInfoService.addEventInfo(eventInfo);
         }
+
+        event.setCreatedAt(new Date());
 
         return eventRepository.persist(event);
     }

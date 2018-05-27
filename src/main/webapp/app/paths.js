@@ -1,5 +1,6 @@
 export const SERVER_HOST = "http://" + require("os").hostname() + ":8080";
 export const PATH_AUTH = SERVER_HOST + "/auth";
+export const PATH_REPORTS_EVENT = SERVER_HOST + "/reports/event/";
 export const PATH_LOGOUT = SERVER_HOST + "/signout";
 export const PATH_API_USER = SERVER_HOST + "/api/user/";
 export const PATH_API_USERS = SERVER_HOST + "/api/users";

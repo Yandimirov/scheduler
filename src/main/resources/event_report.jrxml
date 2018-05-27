@@ -1,0 +1,285 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN"
+        "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+   http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="report" pageWidth="1500" pageHeight="2000"
+              columnWidth="500" leftMargin="20" rightMargin="0"
+              topMargin="20" bottomMargin="20">
+
+    <style name="DetailFieldsStyle"
+           fill="Solid"
+           hAlign="Center"
+           vAlign="Middle"
+           isBlankWhenNull="true"
+           fontName="DejaVu Sans"
+           fontSize="10"
+           isBold="false"
+           isItalic="false"
+           isUnderline="false"
+           isStrikeThrough="false"
+    />
+
+    <field name="id" class="java.lang.Long">
+        <fieldDescription><![CDATA[id]]></fieldDescription>
+    </field>
+
+    <field name="version" class="java.lang.Long">
+        <fieldDescription><![CDATA[version]]></fieldDescription>
+    </field>
+
+    <field name="name" class="java.lang.String">
+        <fieldDescription><![CDATA[name]]></fieldDescription>
+    </field>
+
+    <field name="description" class="java.lang.String">
+        <fieldDescription><![CDATA[description]]></fieldDescription>
+    </field>
+
+    <field name="place" class="java.lang.String">
+        <fieldDescription><![CDATA[place]]></fieldDescription>
+    </field>
+
+    <field name="createdBy" class="java.lang.String">
+        <fieldDescription><![CDATA[createdBy]]></fieldDescription>
+    </field>
+
+    <field name="email" class="java.lang.String">
+        <fieldDescription><![CDATA[email]]></fieldDescription>
+    </field>
+
+    <field name="startDate" class="java.util.Date">
+        <fieldDescription><![CDATA[startDate]]></fieldDescription>
+    </field>
+
+    <field name="endDate" class="java.util.Date">
+        <fieldDescription><![CDATA[endDate]]></fieldDescription>
+    </field>
+
+    <field name="changedAt" class="java.util.Date">
+        <fieldDescription><![CDATA[changedAt]]></fieldDescription>
+    </field>
+
+    <columnHeader>
+        <band height = "15">
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="0" y="0" width="50" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+                <text><![CDATA[id]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="52" y="0" width="50" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[version]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="104" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[name]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="206" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[description]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="308" y="0" width="500" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[place]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="810" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[createdBy]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="912" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[email]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="1014" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[startDate]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="1116" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[endDate]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="1218" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[changedAt]]></text>
+            </staticText>
+
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="15">
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="0" y="0" width="50" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.Long">
+                    <![CDATA[$F{id}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="52" y="0" width="50" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.Long">
+                    <![CDATA[$F{version}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="104" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{name}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="206" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{description}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="308" y="0" width="500" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{place}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="810" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{createdBy}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="912" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{email}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="1014" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.util.Date">
+                    <![CDATA[$F{startDate}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="1116" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.util.Date">
+                    <![CDATA[$F{endDate}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="1218" y="0" width="100" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.util.Date">
+                    <![CDATA[$F{changedAt}]]>
+                </textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+</jasperReport>

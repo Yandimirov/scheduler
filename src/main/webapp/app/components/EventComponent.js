@@ -23,6 +23,7 @@ import UserLink from './UserLink';
 import {getPathApiEventUsers} from "../utils";
 import FontIcon from 'material-ui/FontIcon';
 import UpdateComponent from './UpdateComponent';
+import EventHistory from "./EventHistory";
 
 export default class EventComponent extends React.Component {
     constructor(props) {
@@ -270,6 +271,7 @@ export default class EventComponent extends React.Component {
             this.setState({
                 event: response.data
             });
+            console.log("Update event!!! event: " + response.data);
             if(this.state.event.endDate < new Date()){
                 this.setState({
                     subscribeDisabled: true
@@ -353,7 +355,7 @@ export default class EventComponent extends React.Component {
     render() {
         let moderStyles = null;
         let userId = localStorage.getItem('userId');
-        if (this.state.event.info.createdBy.id === userId) {
+        if (this.state.event.info.createdBy.id == userId) {
             moderStyles = {
                 display: 'inline'
             };
@@ -511,8 +513,11 @@ export default class EventComponent extends React.Component {
                 <div className="event-info-map-container">
                     {mapComponent}
                 </div>
-                <div className="event-info-funcs" style={{display: 'flex', flexDirection: 'row'}}>
+                <div className="event-info-funcs" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                     {actions}
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <EventHistory style={{display: 'inline'}} eventId={this.props.params.eventId}/>
                 </div>
                 <div>
                     {userCount}

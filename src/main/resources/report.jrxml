@@ -1,0 +1,86 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN"
+        "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+   http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="report" pageWidth="1500" pageHeight="2000"
+              columnWidth="500" leftMargin="0" rightMargin="0"
+              topMargin="20" bottomMargin="20">
+
+    <style name="DetailFieldsStyle"
+           fill="Solid"
+           hAlign="Center"
+           vAlign="Middle"
+           isBlankWhenNull="true"
+           fontName="DejaVu Sans"
+           fontSize="10"
+           isBold="false"
+           isItalic="false"
+           isUnderline="false"
+           isStrikeThrough="false"
+    />
+
+    <field name="id" class="java.lang.String">
+        <fieldDescription><![CDATA[id]]></fieldDescription>
+    </field>
+
+    <field name="name" class="java.lang.String">
+        <fieldDescription><![CDATA[name]]></fieldDescription>
+    </field>
+
+    <columnHeader>
+        <band height = "15">
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="0" y="0" width="300" height="15" />
+
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+                <text><![CDATA[Id]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement style="DetailFieldsStyle" x="320" y="0" width="1000" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font isBold = "true" />
+                </textElement>
+
+
+                <text><![CDATA[Name]]></text>
+            </staticText>
+
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="15">
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="0" y="0" width="300" height="15" />
+
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{id}]]>
+                </textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement style="DetailFieldsStyle" x="320" y="0" width="1000" height="15" />
+
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$F{name}]]>
+                </textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+
+</jasperReport>
