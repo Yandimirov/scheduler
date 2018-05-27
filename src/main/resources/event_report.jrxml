@@ -21,7 +21,11 @@
            isItalic="false"
            isUnderline="false"
            isStrikeThrough="false"
-    />
+    >
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
 
     <field name="id" class="java.lang.Long">
         <fieldDescription><![CDATA[id]]></fieldDescription>
@@ -82,7 +86,6 @@
                     <font isBold = "true" />
                 </textElement>
 
-
                 <text><![CDATA[version]]></text>
             </staticText>
 
@@ -92,7 +95,6 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font isBold = "true" />
                 </textElement>
-
 
                 <text><![CDATA[name]]></text>
             </staticText>
@@ -104,7 +106,6 @@
                     <font isBold = "true" />
                 </textElement>
 
-
                 <text><![CDATA[description]]></text>
             </staticText>
 
@@ -114,7 +115,6 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font isBold = "true" />
                 </textElement>
-
 
                 <text><![CDATA[place]]></text>
             </staticText>
@@ -126,7 +126,6 @@
                     <font isBold = "true" />
                 </textElement>
 
-
                 <text><![CDATA[createdBy]]></text>
             </staticText>
 
@@ -136,7 +135,6 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font isBold = "true" />
                 </textElement>
-
 
                 <text><![CDATA[email]]></text>
             </staticText>
@@ -148,7 +146,6 @@
                     <font isBold = "true" />
                 </textElement>
 
-
                 <text><![CDATA[startDate]]></text>
             </staticText>
 
@@ -159,7 +156,6 @@
                     <font isBold = "true" />
                 </textElement>
 
-
                 <text><![CDATA[endDate]]></text>
             </staticText>
 
@@ -169,7 +165,6 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font isBold = "true" />
                 </textElement>
-
 
                 <text><![CDATA[changedAt]]></text>
             </staticText>

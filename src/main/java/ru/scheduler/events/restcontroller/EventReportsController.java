@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsSingleFormatView;
 import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsView;
-import org.springframework.web.servlet.view.jasperreports.JasperReportsCsvView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsXlsView;
 import ru.scheduler.events.model.dto.EventReportRow;
@@ -39,6 +37,19 @@ public class EventReportsController {
     @RequestMapping("/event/{id}")
     public ModelAndView collectEventReport(@RequestParam(name = "type", required = false, defaultValue = "PDF") String reportType, @PathVariable long id) {
 
+        AbstractJasperReportsView view;
+
+        if ("XLS".equalsIgnoreCase(reportType)) {
+            view = new JasperReportsXlsView();
+        } else if ("PDF".equalsIgnoreCase(reportType)) {
+            view = new JasperReportsPdfView();
+        } else {
+            throw new IllegalArgumentException("Incorrect report type " + reportType);
+        }
+
+        view.setUrl("classpath:event_report.jrxml");
+        view.setApplicationContext(appContext);
+
         List<Event> events = eventService.getAllVersions(id);
         List<EventReportRow> reportRows = events.stream()
                 .map(EventReportRow::fromEvent)
@@ -47,21 +58,8 @@ public class EventReportsController {
 
         Map<String, Object> params = new HashMap<>();
         params.put("datasource", reportRows);
+        params.put("format", reportType.toLowerCase());
 
-        AbstractJasperReportsView view;
-
-        if ("XLS".equalsIgnoreCase(reportType)) {
-            view = new JasperReportsXlsView();
-            params.put("format", reportType.toLowerCase());
-        } else if ("PDF".equalsIgnoreCase(reportType)) {
-            view = new JasperReportsPdfView();
-            params.put("format", reportType.toLowerCase());
-        } else {
-            throw new IllegalArgumentException("Incorrect report type " + reportType);
-        }
-
-        view.setUrl("classpath:event_report.jrxml");
-        view.setApplicationContext(appContext);
         return new ModelAndView(view, params);
     }
 }
