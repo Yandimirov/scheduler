@@ -179,7 +179,8 @@ export default class EventComponent extends React.Component {
     handleSubcribeEvent(event) {
         if(!this.state.subscribed){
             this.setState({
-                open: true
+                open: true,
+                waited: false
             });
         } else {
             // TODO add check fo nulls
@@ -327,7 +328,8 @@ export default class EventComponent extends React.Component {
                     });
                 } else {
                     this.setState({
-                        subscribed: false
+                        subscribed: true,
+                        waited: false
                     });
                 }
             }

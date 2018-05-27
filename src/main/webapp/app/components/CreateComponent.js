@@ -10,7 +10,7 @@ import TimePicker from 'material-ui/TimePicker';
 import PlacesAutocomplete, {geocodeByAddress} from 'react-places-autocomplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {PATH_API_EVENT, PATH_API_USERS} from '../paths';
+import {PATH_API_BPMN_EVENT, PATH_API_EVENT, PATH_API_USERS} from '../paths';
 import {getConfig, getUser} from '../utils.js';
 import axios from 'axios';
 import {AutoComplete, Chip, RaisedButton} from "material-ui";
@@ -339,7 +339,7 @@ export default class CreateComponent extends React.Component {
                         userIds: userIds
                     };
                     axios.post(
-                        PATH_API_EVENT,
+                        PATH_API_BPMN_EVENT,
                         eventDto,
                         getConfig()
                     ).then(response => {

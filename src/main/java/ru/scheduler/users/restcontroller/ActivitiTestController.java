@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.scheduler.events.model.dto.EventDTO;
-import ru.scheduler.events.model.entity.EventType;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class ActivitiTestController {
     public String startProcess() {
 
         Map<String, Object> map = new HashMap<>();
-        EventDTO eventDTO = new EventDTO("test", "test", null, null, Collections.emptyList(),null, null, EventType.APPROVED, null);
+        EventDTO eventDTO = new EventDTO("test", "test", null, null, Collections.emptyList(),null, null, null);
         map.put("test", eventDTO);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("my-process", map);
         return "Process started. Number of currently running"

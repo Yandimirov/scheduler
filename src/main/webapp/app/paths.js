@@ -5,6 +5,7 @@ export const PATH_LOGOUT = SERVER_HOST + "/signout";
 export const PATH_API_USER = SERVER_HOST + "/api/user/";
 export const PATH_API_USERS = SERVER_HOST + "/api/users";
 export const PATH_API_EVENT = SERVER_HOST + "/api/event";
+export const PATH_API_BPMN_EVENT = SERVER_HOST + "/api/bpmn/event";
 export const PATH_API_BIRTHDAY = SERVER_HOST + "/api/birthday";
 export const PATH_REGISTRATION = SERVER_HOST + "/registration";
 export const IMAGE_PATH = SERVER_HOST + "/images/";

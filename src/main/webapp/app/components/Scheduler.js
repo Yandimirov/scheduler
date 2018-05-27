@@ -62,8 +62,6 @@ class Scheduler extends React.Component {
         );
     }
 
-
-
     updateEvents(){
         if(typeof(this.props.user) === 'undefined') {
             axios.get(

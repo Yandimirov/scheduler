@@ -20,8 +20,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -67,10 +65,6 @@ public class Event implements CompositeIdentifiable<EventId>, Serializable {
     @NotNull
     @JsonView(View.EVENT.class)
     private Date endDate;
-
-    @Enumerated(EnumType.STRING)
-    @JsonView(View.EVENT.class)
-    private EventType type;
 
     @ApiModelProperty(readOnly = true)
     @JsonView(View.EVENT.class)

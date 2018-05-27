@@ -58,7 +58,7 @@ public class EventController {
     @JsonView(View.EVENT.class)
     @RequestMapping(value = "/event", method = RequestMethod.GET)
     public List<Event> getEvents(RequestEntity<?> request) {
-        return eventService.getApprovedEvents();
+        return eventService.getEvents();
     }
 
     @JsonView(View.EVENT.class)
@@ -71,12 +71,6 @@ public class EventController {
     @RequestMapping(value = "/event/month/{number}", method = RequestMethod.GET)
     public List<Event> getEventsByMonth(@PathVariable long number) {
         return null;
-    }
-
-    @JsonView(View.EVENT.class)
-    @RequestMapping(value = "/event/type/{type}", method = RequestMethod.GET)
-    public List<Event> getEventsByType(@PathVariable String type) {
-        return eventService.getEventsByType(type);
     }
 
     @JsonView(View.EVENT.class)

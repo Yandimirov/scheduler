@@ -59,7 +59,6 @@ public class EventConverter {
                 event.setInfo(eventInfo);
                 event.setStartDate(new Date(tmpStartDate));
                 event.setEndDate(new Date(tmpEndDate));
-                event.setType(eventDTO.getType());
                 event.setCreatedAt(new Date());
                 tmpStartDate += ms;
                 tmpEndDate += ms;
@@ -70,7 +69,6 @@ public class EventConverter {
             event.setInfo(eventInfo);
             event.setStartDate(eventDTO.getStartDate());
             event.setEndDate(eventDTO.getEndDate());
-            event.setType(eventDTO.getType());
             event.setCreatedAt(new Date());
             events.add(event);
         }

@@ -61,7 +61,6 @@ public class EventRepositoryImpl implements CustomEventRepository {
         return first.getId() == second.getId()
                 && Objects.equals(first.getInfo(), second.getInfo())
                 && second.getStartDate().getTime() == first.getStartDate().getTime()
-                && second.getStartDate().getTime() == first.getStartDate().getTime()
-                && first.getType() == second.getType();
+                && second.getStartDate().getTime() == first.getStartDate().getTime();
     }
 }

@@ -14,7 +14,6 @@ import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.Event.EventId;
 import ru.scheduler.events.model.entity.EventInfo;
 import ru.scheduler.events.model.entity.EventNotification;
-import ru.scheduler.events.model.entity.EventType;
 import ru.scheduler.events.model.entity.Place;
 import ru.scheduler.events.model.entity.UserEvent;
 import ru.scheduler.events.model.entity.UserEventStatus;
@@ -142,20 +141,7 @@ public class EventService {
     }
 
     public List<Event> getApprovedEventsForCalendar() {
-        return extractLatestVersions(eventRepository.findByType(EventType.APPROVED));
-    }
-
-    public List<Event> getApprovedEvents() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        Date date = calendar.getTime();
-        return extractLatestVersions(
-                eventRepository.findByStartDateGreaterThanEqualAndType(date, EventType.APPROVED)
-        );
+        return extractLatestVersions(eventRepository.findAll());
     }
 
     private static List<Event> extractLatestVersions(List<Event> events) {
@@ -165,16 +151,6 @@ public class EventService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
-    }
-
-    public List<Event> getEventsByType(String type) {
-        EventType eventType = null;
-        if (type.equals("WAITED")) {
-            eventType = EventType.WAITED;
-        } else {
-            eventType = EventType.APPROVED;
-        }
-        return extractLatestVersions(eventRepository.findByType(eventType));
     }
 
     public Event getEvent(long id, Integer version) {
@@ -320,7 +296,6 @@ public class EventService {
     }
 
     public List<Event> addEvents(EventDTO eventDTO) {
-        eventDTO.setType(EventType.APPROVED);
         PlaceDTO placeDTO = eventDTO.getPlace();
         Place place = null;
         if (placeDTO != null) {

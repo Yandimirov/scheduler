@@ -3,7 +3,6 @@ package ru.scheduler.events.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.scheduler.events.model.entity.EventType;
 import ru.scheduler.users.model.entity.User;
 
 import java.io.Serializable;
@@ -21,6 +20,5 @@ public class EventDTO implements Serializable {
     private List<Long> userIds;
     private Date startDate;
     private Date endDate;
-    private EventType type;
     private User createdBy;
 }
