@@ -1,6 +1,5 @@
 package ru.scheduler.events.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +15,6 @@ import ru.scheduler.config.View;
 import ru.scheduler.events.model.CompositeId;
 import ru.scheduler.events.model.CompositeIdentifiable;
 import ru.scheduler.events.model.entity.Event.EventId;
-import ru.scheduler.users.model.entity.User;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -28,8 +26,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -38,7 +36,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Builder
-public class Event implements CompositeIdentifiable<EventId> {
+public class Event implements CompositeIdentifiable<EventId>, Serializable {
 
     @EmbeddedId
     @GenericGenerator(

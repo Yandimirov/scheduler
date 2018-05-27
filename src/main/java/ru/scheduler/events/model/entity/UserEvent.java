@@ -17,13 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity(name="USER_EVENTS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEvent {
+public class UserEvent implements Serializable {
     @Id
     @GeneratedValue
     @Column(name="USER_EVENT_ID")

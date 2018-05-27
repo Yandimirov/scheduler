@@ -1,6 +1,8 @@
 package ru.scheduler.events.model.dto;
 
-public enum RepeatFreq {
+import java.io.Serializable;
+
+public enum RepeatFreq implements Serializable {
     DAY,
     WEEK,
     MONTH,

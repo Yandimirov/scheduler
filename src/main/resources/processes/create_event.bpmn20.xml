@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef" xmlns:modeler="http://activiti.com/modeler"
+             modeler:version="1.0ev" modeler:exportDateTime="20170726123124" modeler:modelId="1005315"
+             modeler:modelVersion="1" modeler:modelLastUpdated="1501068675875">
+    <process id="create-event" name="Create Event Process" isExecutable="true">
+        <startEvent id="startEvent" name="startEvent"/>
+        <sequenceFlow id="sequence-flow-1" sourceRef="startEvent" targetRef="createPlace"/>
+
+        <serviceTask id="createPlace" name="Create Place task" activiti:delegateExpression="${placeServiceTask}"/>
+        <sequenceFlow id="sequence-flow-2" sourceRef="createPlace" targetRef="createEventInfo"/>
+
+        <serviceTask id="createEventInfo" name="Create EventInfo task" activiti:delegateExpression="${eventInfoServiceTask}"/>
+        <sequenceFlow id="sequence-flow-3" sourceRef="createEventInfo" targetRef="createEvent"/>
+
+        <serviceTask id="createEvent" name="Create Event task" activiti:delegateExpression="${eventServiceTask}"/>
+        <sequenceFlow id="sequence-flow-4" sourceRef="createEvent" targetRef="createUserEvents"/>
+
+        <serviceTask id="createUserEvents" name="Create UserEvents task" activiti:delegateExpression="${userEventServiceTask}"/>
+        <sequenceFlow id="sequence-flow-5" sourceRef="createUserEvents" targetRef="sendInfoMail"/>
+
+        <serviceTask id="sendInfoMail" name="Send information mails task" activiti:delegateExpression="${sendInfoMailServiceTask}"/>
+        <sequenceFlow id="sequence-flow-6" sourceRef="sendInfoMail" targetRef="endEvent"/>
+
+        <endEvent id="endEvent" name="endEvent"/>
+    </process>
+</definitions>

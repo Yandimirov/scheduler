@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Created by Mikhail Yandimirov on 16.04.2017.
@@ -28,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class EventInfo {
+public class EventInfo implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "INFO_ID")

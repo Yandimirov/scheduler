@@ -1,10 +1,5 @@
 package ru.scheduler.restcontroller.unit;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +20,12 @@ import ru.scheduler.events.service.EventService;
 import ru.scheduler.users.model.entity.User;
 import ru.scheduler.users.model.entity.UserRole;
 import ru.scheduler.users.service.JwtService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by Mikhail Yandimirov on 13.05.2017.
@@ -128,7 +129,7 @@ public class EventControllerTest {
     public void addEvent() throws Exception {
         when(jwtService.getUser(token)).thenReturn(user);
         when(eventService.addEvents(eventDTO)).thenReturn(new ArrayList<Event>());
-        eventController.addEvent(eventDTO);
+        eventController.addEvent(eventDTO, token);
         verify(jwtService).getUser(token);
         verify(eventService).addEvents(eventDTO);
     }
@@ -164,7 +165,7 @@ public class EventControllerTest {
     public void getUserEvents() throws Exception {
         RequestEntity<?> request = new RequestEntity<Object>("", headers, null, null);
         when(eventService.getUserEvents(user.getId())).thenReturn(new ArrayList<Event>());
-        eventController.getUserEvents(request, user.getId());
+        eventController.getUserEvent(request, user.getId());
         verify(eventService).getUserEvents(user.getId());
     }
 

@@ -14,13 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity(name="EVENT_NOTIFICATIONS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventNotification {
+public class EventNotification implements Serializable {
     @Id
     @GeneratedValue
     @Column(name="NOTIFICATION_ID")
