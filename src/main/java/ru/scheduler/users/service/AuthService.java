@@ -135,26 +135,37 @@ public class AuthService {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         Date date = format.parse(birthDay);
 
-        if (office.equals("St. Petersburg")) {
-            office = "Санкт-Петербург";
-        } else if (office.equals("Moscow")) {
-            office = "Москва";
-        } else if (office.equals("Samara")) {
-            office = "Самара";
-        } else if (office.equals("Nizhny Novgorod")) {
-            office = "Нижний Новгород";
-        } else if (office.equals("Saratov")) {
-            office = "Саратов";
-        } else if (office.equals("Togliatti")) {
-            office = "Тольятти";
-        } else if (office.equals("Voronezh")) {
-            office = "Воронеж";
-        } else if (office.equals("Kiev")) {
-            office = "Киев";
-        } else if (office.equals("Sumy")) {
-            office = "Сумы";
-        } else if (office.equals("Odessa")) {
-            office = "Одесса";
+        switch (office) {
+            case "St. Petersburg":
+                office = "Санкт-Петербург";
+                break;
+            case "Moscow":
+                office = "Москва";
+                break;
+            case "Samara":
+                office = "Самара";
+                break;
+            case "Nizhny Novgorod":
+                office = "Нижний Новгород";
+                break;
+            case "Saratov":
+                office = "Саратов";
+                break;
+            case "Togliatti":
+                office = "Тольятти";
+                break;
+            case "Voronezh":
+                office = "Воронеж";
+                break;
+            case "Kiev":
+                office = "Киев";
+                break;
+            case "Sumy":
+                office = "Сумы";
+                break;
+            case "Odessa":
+                office = "Одесса";
+                break;
         }
 
         User user = new User();
@@ -170,27 +181,29 @@ public class AuthService {
     public User getUser(AuthDTO auth) throws NamingException {
         String username = auth.getUsername();
         String password = auth.getPassword();
+        User user = null;
         if (username.equals("miya0217") || username.equals("anan1116")) {
-            return userService.findUserByUsername(username);
-        }
-        Attributes attributes = authenticate(username, password);
-        if (attributes != null) {
-            User user = userService.findUserByUsername(username);
-            if (user == null) {
-                try {
-                    user = saveUser(attributes, username);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            user = userService.findUserByUsername(username);
+        } else {
+            Attributes attributes = authenticate(username, password);
+            if (attributes != null) {
+                user = userService.findUserByUsername(username);
+                if (user == null) {
+                    try {
+                        user = saveUser(attributes, username);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            if (StringUtils.isEmpty(user.getToken())) {
-                String token = jwtService.getToken(user);
-                user.setToken(token);
-                user = userService.save(user);
-            }
-            return user;
         }
-        return null;
+        if (user != null) {
+            String token = jwtService.getToken(user);
+            user.setToken(token);
+            user = userService.save(user);
+        }
+
+        return user;
     }
 
     public boolean logout(User user) {

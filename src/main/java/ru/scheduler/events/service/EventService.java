@@ -212,7 +212,10 @@ public class EventService {
     public UserEvent subscribeEvent(EventNotificationDTO eventNotificationDTO, User user) {
         Event event = eventRepository.findLatestVersionById(eventNotificationDTO.getId())
                 .orElseThrow(() -> new EventNotFoundException("Event with id '%s' not found", eventNotificationDTO.getId()));
-        UserEvent userEvent = new UserEvent();
+        UserEvent userEvent = userEventRepository.findByEventAndUser(event, user);
+        if (userEvent == null) {
+            userEvent = new UserEvent();
+        }
         userEvent.setEvent(event);
         userEvent.setUser(user);
         userEvent.setStatus(UserEventStatus.ACCEPTED);
