@@ -329,10 +329,11 @@ export default class CreateComponent extends React.Component {
             if(start && end){
                 if(flag){
                     let userIds = this.state.selectedUsers.map(user => user.id);
+                    let place = this._fixPlaceIfnecessary(state.place);
                     let eventDto = {
                         name: state.name,
                         description: state.description,
-                        place: state.place,
+                        place: place,
                         repeats: repeatsDto,
                         startDate: start,
                         endDate: end,
@@ -352,6 +353,15 @@ export default class CreateComponent extends React.Component {
 
             }
         }
+    }
+
+    _fixPlaceIfnecessary(place) {
+        if (place !== null) {
+            if (place.lat === "" || place.lon === "") {
+                return null;
+            }
+        }
+        return place;
     }
 
     render() {
