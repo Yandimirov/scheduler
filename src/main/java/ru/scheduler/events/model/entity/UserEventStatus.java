@@ -8,5 +8,6 @@ import java.io.Serializable;
 public enum UserEventStatus implements Serializable {
     ACCEPTED,
     WAITED,
-    REJECTED
+    REJECTED,
+    UNKNOWN
 }

@@ -420,8 +420,6 @@ export default class EventComponent extends React.Component {
         const event = this.state.event;
 
         let mapComponent = '';
-        console.log('PLACE: ' + JSON.stringify(event.info.place));
-        console.log(mapComponent);
         if(event.info.place){
             mapComponent =
                 <div className="event-info-map-container">

@@ -16,6 +16,7 @@ import ru.scheduler.config.View;
 import ru.scheduler.events.model.dto.EventDTO;
 import ru.scheduler.events.model.dto.EventNotificationDTO;
 import ru.scheduler.events.model.entity.Event;
+import ru.scheduler.events.model.entity.EventWithUserStatus;
 import ru.scheduler.events.model.entity.UserEvent;
 import ru.scheduler.events.model.entity.UserEventStatus;
 import ru.scheduler.events.repository.UserEventRepository;
@@ -59,6 +60,13 @@ public class EventController {
     @RequestMapping(value = "/event", method = RequestMethod.GET)
     public List<Event> getEvents(RequestEntity<?> request) {
         return eventService.getEvents();
+    }
+
+    @JsonView(View.EVENT.class)
+    @RequestMapping(value ="/eventWithStatus", method = RequestMethod.GET)
+    public List<EventWithUserStatus> getEventsWithStatuses(@RequestHeader("x-auth-token") String token) {
+        User user = jwtService.getUser(token);
+        return eventService.getAllUserEvents(user);
     }
 
     @JsonView(View.EVENT.class)

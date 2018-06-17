@@ -14,6 +14,7 @@ import ru.scheduler.events.model.entity.Event;
 import ru.scheduler.events.model.entity.Event.EventId;
 import ru.scheduler.events.model.entity.EventInfo;
 import ru.scheduler.events.model.entity.EventNotification;
+import ru.scheduler.events.model.entity.EventWithUserStatus;
 import ru.scheduler.events.model.entity.Place;
 import ru.scheduler.events.model.entity.UserEvent;
 import ru.scheduler.events.model.entity.UserEventStatus;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -127,6 +129,27 @@ public class EventService {
         return userEvents.stream()
                 .map(UserEvent::getEvent)
                 .collect(toList());
+    }
+
+    public List<EventWithUserStatus> getAllUserEvents(User user) {
+        List<Event> events = getEvents();
+
+        List<EventWithUserStatus> userEvents = events.stream()
+                .map(event -> {
+                    UserEvent userEvent = userEventRepository.findByEventAndUser(event, user);
+                    UserEventStatus status = userEvent == null ? UserEventStatus.UNKNOWN : userEvent.getStatus();
+
+                    return EventWithUserStatus.builder()
+                            .compositeId(event.getCompositeId())
+                            .status(status)
+                            .createdAt(event.getCreatedAt())
+                            .startDate(event.getStartDate())
+                            .endDate(event.getEndDate())
+                            .info(event.getInfo())
+                            .build();
+                })
+                .collect(Collectors.toList());
+        return userEvents;
     }
 
     public List<Event> getEvents() {
