@@ -20,7 +20,7 @@ export default class UpdateComponent extends React.Component {
                 name: "",
                 id: "",
                 lat: "",
-                lng: "",
+                lon: "",
             },
             startDate: null,
             startTime: null,
@@ -52,12 +52,7 @@ export default class UpdateComponent extends React.Component {
             this.setState({
                 name: event.info.name,
                 description: event.info.description,
-                place: {
-                    name: event.info.place.name,
-                    id: event.info.place.id,
-                    lat: event.info.place.lat,
-                    lng: event.info.place.lon
-                },
+                place: event.info.place,
                 startDate: new Date(event.startDate),
                 startTime: new Date(event.startDate),
                 endDate: new Date(event.endDate),
@@ -84,12 +79,7 @@ export default class UpdateComponent extends React.Component {
                 description: this.state.description,
                 name: this.state.name,
                 id: this.state.info,
-                place : {
-                    name: this.state.place.name,
-                    id: this.state.place.id,
-                    lat: this.state.place.lat,
-                    lon: this.state.place.lng
-                }
+                place: this.state.place
             }
         };
         console.log(event);
@@ -117,7 +107,7 @@ export default class UpdateComponent extends React.Component {
                 name: event,
                 id: '',
                 lat: '',
-                lng: '',
+                lon: '',
             }
         });
     }
@@ -131,7 +121,7 @@ export default class UpdateComponent extends React.Component {
                         name: event,
                         id: placeId,
                         lat: latLng.lat,
-                        lng: latLng.lng,
+                        lon: latLng.lng,
                     }
                 });
             } else {
@@ -140,7 +130,7 @@ export default class UpdateComponent extends React.Component {
                         name: event,
                         id: "",
                         lat: "",
-                        lng: "",
+                        lon: "",
                     }
                 });
             }
@@ -281,7 +271,7 @@ export default class UpdateComponent extends React.Component {
                                 autocompleteItemActive: { color: 'blue' }
                             }
                             }
-                            value={this.state.place.name}
+                            value={this.state.place ? this.state.place.name : ''}
                             onChange={this.handlePlaceChange}
                             onSelect={this.handleSelectPlace}
                             placeholder="Местоположение"

@@ -30,7 +30,7 @@ export default class EventComponent extends React.Component {
         super(props);
         this.state = {
             event: {
-                id: '',
+                id: props.params.eventId,
                 startDate: '',
                 endDate: '',
                 createdAt: '',
@@ -43,12 +43,7 @@ export default class EventComponent extends React.Component {
                         firstName: '',
                         lastName: ''
                     },
-                    place: {
-                        id: '',
-                        lat: '',
-                        lon: '',
-                        name: ''
-                    }
+                    place: null
                 },
 
             },
@@ -282,6 +277,7 @@ export default class EventComponent extends React.Component {
                     subscribeDisabled: false
                 });
             }
+
         });
     }
 
@@ -355,6 +351,7 @@ export default class EventComponent extends React.Component {
     };
 
     render() {
+        console.log("RENDER NOW!!1");
         let moderStyles = null;
         let userId = localStorage.getItem('userId');
         if (this.state.event.info.createdBy.id == userId) {
@@ -423,8 +420,13 @@ export default class EventComponent extends React.Component {
         const event = this.state.event;
 
         let mapComponent = '';
-        if(event.info.place.id != ''){
-            mapComponent = <MapContainer width={1300} height={300} event={this.props.params.eventId} center={{lat: event.info.place.lat, lng: event.info.place.lon}}/>;
+        console.log('PLACE: ' + JSON.stringify(event.info.place));
+        console.log(mapComponent);
+        if(event.info.place){
+            mapComponent =
+                <div className="event-info-map-container">
+                    <MapContainer width={1300} height={300} event={event.id} center={{lat: event.info.place.lat, lng: event.info.place.lon}}/>
+                </div>;
         }
 
         let userList = '';
@@ -508,13 +510,11 @@ export default class EventComponent extends React.Component {
                         <p><b>Конец события</b>: {moment(event.endDate).format('LLL')}</p>
                         <p><b>Создатель события</b>: <Link to={"/users/" + event.info.createdBy.id}> {event.info.createdBy.firstName} {event.info.createdBy.lastName}</Link></p>
                         <p><b>Описание</b>: {event.info.description}</p>
-                        <p><b>Местоположение:</b> {event.info.place.name}</p>
+                        <p><b>Местоположение:</b> {event.info.place ? event.info.place.name : ''}</p>
                     <div>
                     </div>
                 </div>
-                <div className="event-info-map-container">
-                    {mapComponent}
-                </div>
+                {mapComponent}
                 <div className="event-info-funcs" style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                     {actions}
                 </div>

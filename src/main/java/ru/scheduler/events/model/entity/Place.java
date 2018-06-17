@@ -19,7 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(of={"id"})
 public class Place implements Serializable {
 
     @Id
