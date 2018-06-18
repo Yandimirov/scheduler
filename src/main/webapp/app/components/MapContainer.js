@@ -51,75 +51,6 @@ export default class MapContainer extends React.Component {
 
     }
 
-    componentDidMount(){
-        if(typeof(this.props.user) === 'undefined'){
-            if(this.props.event != null){
-                axios.get(
-                    getPathApiEvent(this.props.event),
-                    getConfig()
-                ).then(response => {
-                    let srcEvent = response.data;
-                    let event = {
-                        id : srcEvent.id,
-                        info: srcEvent.info,
-                        showinfo: false
-                    };
-                    this.setState({
-                        markers: [event],
-                        center:{
-                            lat: event.info.place.lat,
-                            lng: event.info.place.lon
-                        }
-                    });
-                });
-            } else {
-                axios.get(
-                    PATH_API_EVENT,
-                    getConfig()
-                ).then(response => {
-                    let events = [];
-                    let srcEvents = response.data;
-                    for(let i = 0 ; i < srcEvents.length; i++){
-                        if(srcEvents[i].info.place.id != 0){
-                            srcEvents[i].info.place.lat += Math.random() * 0.00001;
-                            srcEvents[i].info.place.lon += Math.random() * 0.00001;
-                            events.push({
-                                id : srcEvents[i].id,
-                                info: srcEvents[i].info,
-                                showinfo: false
-                            });
-                        }
-                    }
-                    this.setState({
-                        markers: events,
-                    })
-                });
-            }
-        } else {
-            axios.get(
-                getPathApiUserEvents(this.props.user),
-                getConfig()
-            ).then( response =>{
-                let events = [];
-                let srcEvents = response.data;
-                for(let i = 0 ; i < srcEvents.length; i++){
-                    if(srcEvents[i].info.place.id != 0){
-                        srcEvents[i].info.place.lat += Math.random() * 0.00001;
-                        srcEvents[i].info.place.lon += Math.random() * 0.00001;
-                        events.push({
-                            id : srcEvents[i].id,
-                            info: srcEvents[i].info,
-                            showinfo: false
-                        });
-                    }
-                }
-                this.setState({
-                    markers: events,
-                })
-            });
-        }
-    };
-
     handleMapLoad(map) {
         this._mapComponent = map;
         if (map) {
@@ -194,6 +125,75 @@ export default class MapContainer extends React.Component {
     }
 
     render() {
+
+        if(typeof(this.props.user) === 'undefined'){
+            if(this.props.event != null){
+                axios.get(
+                    getPathApiEvent(this.props.event),
+                    getConfig()
+                ).then(response => {
+                    let srcEvent = response.data;
+                    let event = {
+                        id : srcEvent.id,
+                        info: srcEvent.info,
+                        showinfo: false
+                    };
+                    this.setState({
+                        markers: [event],
+                        center:{
+                            lat: event.info.place.lat,
+                            lng: event.info.place.lon
+                        }
+                    });
+                });
+            } else {
+                axios.get(
+                    PATH_API_EVENT,
+                    getConfig()
+                ).then(response => {
+                    let events = [];
+                    let srcEvents = response.data;
+                    for(let i = 0 ; i < srcEvents.length; i++){
+                        if(srcEvents[i].info.place.id != 0){
+                            srcEvents[i].info.place.lat += Math.random() * 0.00001;
+                            srcEvents[i].info.place.lon += Math.random() * 0.00001;
+                            events.push({
+                                id : srcEvents[i].id,
+                                info: srcEvents[i].info,
+                                showinfo: false
+                            });
+                        }
+                    }
+                    this.setState({
+                        markers: events,
+                    })
+                });
+            }
+        } else {
+            axios.get(
+                getPathApiUserEvents(this.props.user),
+                getConfig()
+            ).then( response =>{
+                let events = [];
+                let srcEvents = response.data;
+                for(let i = 0 ; i < srcEvents.length; i++){
+                    if(srcEvents[i].info.place.id != 0){
+                        srcEvents[i].info.place.lat += Math.random() * 0.00001;
+                        srcEvents[i].info.place.lon += Math.random() * 0.00001;
+                        events.push({
+                            id : srcEvents[i].id,
+                            info: srcEvents[i].info,
+                            showinfo: false
+                        });
+                    }
+                }
+                this.setState({
+                    markers: events,
+                })
+            });
+        }
+
+
         return (
             <div style={{height: this.props.height}}>
                 <ExtendedGoogleMap

@@ -259,25 +259,10 @@ export default class EventComponent extends React.Component {
         }
     };
 
-    updateEvent(){
-        axios.get(
-            getPathApiEvent(this.props.params.eventId),
-            getConfig()
-        ).then(response => {
-            this.setState({
-                event: response.data
-            });
-            console.log("Update event!!! event: " + response.data);
-            if(this.state.event.endDate < new Date()){
-                this.setState({
-                    subscribeDisabled: true
-                });
-            } else {
-                this.setState({
-                    subscribeDisabled: false
-                });
-            }
-
+    updateEvent(response){
+        this.setState({
+            event: response.data,
+            subscribeDisabled: response.data.endDate < new Date()
         });
     }
 
@@ -336,17 +321,9 @@ export default class EventComponent extends React.Component {
             getConfig()
         ).then(response => {
             this.setState({
-                event: response.data
+                event: response.data,
+                subscribeDisabled: response.data.endDate < new Date()
             });
-            if(this.state.event.endDate < new Date()){
-                this.setState({
-                    subscribeDisabled: true
-                });
-            } else {
-                this.setState({
-                    subscribeDisabled: false
-                });
-            }
         });
     };
 

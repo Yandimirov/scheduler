@@ -88,7 +88,7 @@ export default class UpdateComponent extends React.Component {
             event,
             getConfig()
         ).then(response => {
-            this.props.updateParent();
+            this.props.updateParent(response);
         });
         this.handleClose();
     }
