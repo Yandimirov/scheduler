@@ -29,6 +29,7 @@ import ru.scheduler.users.service.UserService;
 import javax.mail.MessagingException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -188,15 +189,10 @@ public class EventController {
 
     @JsonView(View.EVENT.class)
     @RequestMapping(value = "event/{id}", method = RequestMethod.DELETE)
-    public boolean deleteEvent(RequestEntity<?> request, @PathVariable long id)
-            throws MessagingException {
-        HttpHeaders headers = request.getHeaders();
-        List<String> tokens = headers.get(TOKEN_HEADER);
-        User user = null;
-        for (String s : tokens) {
-            user = jwtService.getUser(s);
-        }
-        return UserRole.MODERATOR == user.getRole() && eventService.deleteEvent(id);
+    public boolean deleteEvent(@PathVariable long id, @RequestHeader("x-auth-token") String token) {
+        User user = jwtService.getUser(token);
+        Event event = getEvent(id, null);
+        return Objects.equals(user, event.getInfo().getCreatedBy()) && eventService.deleteEvent(id);
     }
 
 }

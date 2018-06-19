@@ -196,23 +196,19 @@ public class EventService {
         return userEventRepository.findByEventAndUser(event, user);
     }
 
-    public boolean deleteEvent(long id) throws MessagingException {
+    public boolean deleteEvent(long id) {
         Event event = eventRepository.findLatestVersionById(id)
                 .orElseThrow(() -> new EventNotFoundException("Event with id '%s' not found", id));
         List<UserEvent> userEvents = userEventRepository.findByEvent(event);
         for (UserEvent userEvent : userEvents) {
             List<EventNotification> eventNotifications = eventNotificationRepository
                     .findByEvent(userEvent);
-            for (EventNotification eventNotification : eventNotifications) {
-                eventNotificationRepository.delete(eventNotification);
-            }
-            StringBuilder mailText = new StringBuilder();
-            mailText.append("Event with name ").append(userEvent.getEvent().getInfo().getName())
-                    .append(" was removed!");
+            eventNotificationRepository.delete(eventNotifications);
+            String mailText = "Event with name " + userEvent.getEvent().getInfo().getName() + " was removed!";
             Mail mail = Mail.builder()
                     .to(userEvent.getUser().getEmail())
                     .subject("Event was removed")
-                    .text(mailText.toString())
+                    .text(mailText)
                     .build();
             mailService.asyncSend(mail);
             userEventRepository.delete(userEvent);
